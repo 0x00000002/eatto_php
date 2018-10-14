@@ -1,0 +1,15 @@
+
+
+CREATE VIEW HostsFound AS
+SELECT l.country, l.city, l.suburb, u.name, p.ref, d.address
+  FROM locations l INNER JOIN hosts h
+    ON h.location = l.id
+  INNER JOIN users u
+    ON u.id = h.user
+  INNER JOIN photos p
+    ON p.user = h.user AND p.id = h.profile_photo
+  INNER JOIN details d
+    ON d.user = h.user
+
+
+----------

@@ -1,0 +1,22 @@
+{% if mtg.photo_name %}
+    {% set photo = "/uploads/users/" ~ mtg.opponent_id ~ "/thumbs/" ~ mtg.photo_name %}
+{% else %}
+    {% set photo = '/assets/img/icons/nophoto_small.png' %}
+{% endif %}
+
+{% if mtg.is_confirmed == 1 and mtg.is_reviewed == 0 and mtg.meet_on|date("U") < "0 days"|date("U")  %}
+    {% set is_recommended = '<div class="rec-btn">Recommend</div>' %}
+{% else %}
+    {% set is_recommended = '' %}
+{% endif %}
+
+
+<a href="/meetings/{{mtg.meeting_id}}/view" class="btn req-list-card">
+    <li>
+        <div class="imag"><img src="{{photo}}" alt="{{mtg.opponent_name}}"></div>
+        <div class="name">{{mtg.opponent_name}}{% if mtg.refs %}, <span>{{mtg.refs}}</span> refs{% endif %}</div>
+        <div class="date">{{mtg.meet_on|date('d M, h:i')}}</div>
+        <div class="text">{{mtg.proposal}} </div>
+        {{ is_recommended | raw }}
+    </li>
+</a>

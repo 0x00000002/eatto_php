@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Host details{% endblock %}
+
+{% if host.profile_photo %}
+{% set photo = "/uploads/users/" ~ host.user_id ~ "/thumbs/" ~ host.profile_photo %}
+{% else %}
+{% set photo = '/assets/img/nophoto_small.png' %}
+{% endif %}
+
+{% block body%}
+
+<div id="host">
+
+    <section id="host-profile">
+
+            <figure>
+                <img src="{{photo}}" alt="{{host.user_name}}">
+                <figcaption>
+                    <h1>{{host.user_name}}</h1>
+                    <h4>{{host.place}}</h4>
+                    <p>{{host.user_info}}</p>
+                    {% if refs %}
+                    <h2>References</h2>
+                    {% for ref in refs %}
+                    <li>
+                        <span class="quote">“</span>
+                        <div>
+                            {{ref.ref}}<br>
+                            - <a href="/hosts/{{ref.id}}/view">{{ref.name}}</a>
+                        </div>
+                    </li>
+                    {% endfor %}
+                    {% endif %}
+                </figcaption>
+            </figure>
+
+    </section>
+
+    <section id="proposal">
+        <h2>Propose meeting</h2>
+        <form method="post" action="/meetings/{{host.user_id}}/new">
+            <label for="inputWhen">On date</label>
+            <input type="date" id="inputWhen" name="meet_on" required class="form-control"></input>
+            <label for="inputText">Meal you can cook</label>
+            <textarea id="inputText" rows=3 name="text" required class="form-control"></textarea>
+            {% if me == false %}
+            <button type="submit" disabled class="btn btn-default disabled"> Propose</button>
+            <span class="reg-req">Please <a href="/signup"><u>register</u></a> to propose meetings</span>
+            {% else %}
+            <button type="submit" class="btn btn-default"> Propose</button>
+            {% endif %}
+        </form>
+    </section>
+
+</div>
+
+{% endblock %}

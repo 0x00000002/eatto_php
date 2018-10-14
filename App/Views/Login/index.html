@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+
+
+<form action="/login/authenticate" method="post" class="auth">
+
+    <h1>Log in</h1>
+
+    <div class="form-group">
+        <label for="inputEmail">Email address</label>
+        <input type="email" id="inputEmail" name="email" autofocus value="{{ email }}"
+               class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword">Password</label>
+        <input type="password" id="inputPassword" name="password" class="form-control"/>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" name="remember_me" {% if remember_me %} checked="checked" {% endif %}/> Remember me
+        </label>
+    </div>
+    <br>
+    <div>
+        <button type="submit" class="btn btn-default"> Log in</button>
+        <a href="/password/forgot?email={{email}}">Forgot password?</a>
+    </div>
+</form>
+
+{% endblock %}
+
+
+

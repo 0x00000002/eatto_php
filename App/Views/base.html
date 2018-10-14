@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+
+{% block menu %}
+<header class="nav navbar-fixed-top">
+    <nav class="top-menu">
+        <div>
+            <a class="logo" href="/">eattogether</a>
+        </div>
+        {% if current_user %}
+        <div><a href="/hosts">Find hosts</a></div>
+        {% endif %}
+        <div>
+            {% if current_user %}
+            <a href="/meetings"><img id="i-meeting" src="/assets/img/icons/mtg-w.png" alt="Meeting request"></a>
+            <a href="/messages"><img id="i-message" src="/assets/img/icons/msg-w.png" alt="Messages"></a>
+            <a href='/profile'><span id="i-profile">{{ current_user.email }}</span></a>
+            <button onclick="location.href='/logout';"> Log out </i></button>
+            {% else %}
+            <a class="" href="/signup">Sign up</a> &nbsp;
+            <button onclick="location.href='/login';">Login</button>
+            {% endif %}
+        </div>
+    </nav>
+</header>
+{% endblock %}
+
+
+{% block before_body %}
+ <div class="page">
+{% endblock %}
+
+
+    <div class="flash">
+        {% for message in flash_messages %}
+        <div class="alert alert-{{message.type}} fade in">{{message.text}}</div>
+        {% endfor %}
+    </div>
+
+
+{% block body %}
+{% endblock %}
+
+{% block after_body %}
+</div>
+{% endblock %}
+
+
+
+
+{% block footer %}
+
+<section id="spread" class="bg bg-word">
+    <h2>Spread the word</h2>
+    <p>Like us – help people to connect</p>
+    <div class="sharethis-inline-share-buttons"></div>
+    <p>eat@eatto.me</p>
+</section>
+
+<footer>
+    <div class="container-fluid">
+        <div>
+            <li class="logo">eattogether</li>
+            <li><a href="">About us</a></li>
+            <li><a href="">Terms and conditions</a></li>
+            <li><a href="">Cookies policy</a></li>
+        </div>
+        <div>Copyright &copy; 2017</div>
+    </div>
+</footer>
+
+{% endblock %}
+
+
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,700&amp;subset=cyrillic-ext" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+</script>
+
+<script type="text/javascript"
+        src="//platform-api.sharethis.com/js/sharethis.js#property=59d4e35020f64600117cea63&product=inline-share-buttons"></script>
+
+{% block scripts %}
+
+<script>
+
+    $(document).ready(
+        function pullNotifications() {
+            $.ajax({
+                url: "/notifications",
+                success: function (json) {
+                    //console.log(json);
+                    if (json.mtg == 0)
+                        document.getElementById("i-meeting").src = "/assets/img/icons/mtg-w.png";
+                    if (json.mtg == 1)
+                        document.getElementById("i-meeting").src = "/assets/img/icons/mtg-g.png";
+                    if (json.msg == 0)
+                        document.getElementById("i-message").src = "/assets/img/icons/msg-w.png";
+                    if (json.msg == 1)
+                        document.getElementById("i-message").src = "/assets/img/icons/msg-g.png";
+                    if (json.ref == 0)
+                        $("#i-profile").removeClass("");
+                    if (json.ref == 1)
+                        $("#i-profile").addClass("");
+
+                    setTimeout(function () {
+                        pullNotifications();
+                    }, 3000);
+                }
+                ,
+                error: function () {
+                    console.log('Can not run');
+                }
+            })
+        })
+
+</script>
+
+
+{% endblock %}
+
+
+</body>
+</html>

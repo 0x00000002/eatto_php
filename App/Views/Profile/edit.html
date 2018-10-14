@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}Editing{% endblock %}
+
+{% block body %}
+
+
+    {% if user.errors is not empty %}
+    <p>Errors:</p>
+    <ul>
+        {% for error in user.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <form method="post" id="edit-profile" name="profile" action="/profile/update" class="auth">
+        <h1>Edit profile</h1>
+
+        <div class="form-group">
+            <label for="inputName">Name</label>
+            <input id="inputName" name="name" placeholder="Name" value="{{ user.name }}" required class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="inputInfo">Personal info</label>
+            <textarea id="inputInfo" rows=5 name="info" class="form-control">{{ info }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="inputStatus">Status</label>
+            <select id="inputStatus" name="status" class="form-control">
+                {% if status == 0 %}
+                <option value="0">Host</option>
+                <option value="1">Traveler</option>
+                {% else %}
+                <option value="1">Traveler</option>
+                <option value="0">Host</option>
+                {% endif %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail">Email</label>
+            <input id="inputEmail" name="email" placeholder="email address" value="{{ user.email }}" required
+                   type="email" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="place_name">City</label>
+            <input id="place_name" name="place_name" placeholder="City" value="{{ place_name }}" required
+                   class="form-control" />
+            <input type="hidden" id="place_id" name="place_id" value="{{place_id}}">
+        </div>
+        <div class="form-group">
+            <label for="inputAddress">Address</label>
+            <input id="inputAddress" name="address" placeholder="Address" value="{{ address }}"
+                   class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" id="inputPassword" name="password" placeholder="Password"
+                   aria-describedby="helpBlock" class="form-control"/>
+            <span id="helpBlock" class="help-block">Leave blank to keep current password</span>
+        </div>
+
+        <button type="submit" class="btn-norm"> Save</button>
+        <a href="/profile">Cancel</a>
+
+    </form>
+</section>
+{% endblock %}
+
+
+{% block scripts %}
+
+
+<script
+        src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js">
+</script>
+
+
+<script src="/assets/js/hideShowPassword.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+
+        var userId = '{{ user.id }}';
+
+        $('#edit-profile').validate({
+            rules: {
+                name: 'required',
+                email: {
+                    required: true,
+                    email: true,
+                    remote: {
+                        url: '/account/validate-email',
+                        data: {
+                            ignore_id: function () {
+                                return userId;
+                            }
+                        }
+                    }
+                },
+                password: {
+                    minlength: 8,
+                    validPassword: true
+                }
+            },
+            messages: {
+                email: {
+                    remote: 'email already taken'
+                }
+            }
+        });
+
+
+        $('#inputPassword').hideShowPassword({
+            show: false,
+            innerToggle: 'focus'
+        });
+    });
+
+    function initialize() {
+        var options = {
+            types: ['(cities)'],
+        };
+
+        var input = document.getElementById('place_name');
+        var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            var place = autocomplete.getPlace();
+            if (place != undefined) {
+                document.getElementById('place_id').value = place.id;
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    });
+
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrewHwdEUOk9rtiKTPzZOCYNnEPcQX-is&libraries=places&callback=initialize">
+</script>
+
+{% endblock %}
+

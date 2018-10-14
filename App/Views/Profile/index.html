@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% if user.photo %}
+    {% set photo = "/uploads/users/" ~ user.id ~ "/thumbs/" ~ user.photo %}
+{% else %}
+    {% set photo = '/assets/img/nophoto_small.png' %}
+{% endif %}
+
+{% block body%}
+
+
+<div id="profile">
+
+    <section id="user-profile">
+        <figure>
+            <img src="{{photo}}" alt="{{host.user_name}}">
+            <figcaption>
+                <h1>{{user.name}}</h1>
+                <h3>Personal info</h3>
+                <p>{% if user.info %}{{user.info}}{% else %}<i>add your personal information here</i>{% endif %}</p>
+                <h3>Status</h3>
+                <p>{% if user.status == 1 %}Traveler{% else %}Host{% endif %}</p>
+                <h3>E-mail</h3>
+                <p>{{user.email}}</p>
+
+                {% if user.status %}
+                <h3>Current location</h3>
+                <p>{{user.place_name}}</p>
+                {% else %}
+                <h3>Address</h3>
+                <p>{{user.address}}<br>{{user.place_name}}</p>
+                {% endif %}
+                {% if me == user.id %}
+                <a class="btn-norm" href="/profile/edit">Edit profile</a>
+                {% endif %}
+            </figcaption>
+        </figure>
+    </section>
+
+    <section id="photo-gallery">
+        {% if photos %}
+        <h2>Photos</h2>
+        <div class="gallery">
+            {% for photo in photos %}
+            {% set checked = "" %}
+            <figure>
+                <a href="/uploads/users/{{me}}/{{photo.ref}}">
+                    <img src="/uploads/users/{{me}}/thumbs/{{photo.ref}}" alt="{{photo.ref}}">
+                </a>
+                <figcaption style="display: flex; justify-content: space-between;padding: 10px 0px;">
+                    {% if photo.id != photo.profile_photo_id %}
+                    <a href="/profile/{{photo.id}}/setProfilePhoto" class="set">Set profile</a>
+                    <a href="/profile/{{photo.id}}/deletePhoto" class="delete">Delete</a>
+                    {% else %}
+                    <span class="current">Your profile photo</span>
+                    {% endif %}
+                </figcaption>
+            </figure>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form action="/profile/addPhoto" method="post" enctype="multipart/form-data">
+            <div class="upload">
+                <div>
+                    <label for="file-upload" class="btn-norm" > Add photo </label>
+                    <input id="file-upload" type="file" name="file" onchange="document.getElementById('submitButtonId').click();" accept="image/*" />
+                    <input type="submit" value="Submit" name="submit" id="submitButtonId" />
+                </div>
+            </div>
+        </form>
+
+    </section>
+
+</div>
+
+{% endblock %}

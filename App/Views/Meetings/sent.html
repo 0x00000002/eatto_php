@@ -1,0 +1,85 @@
+
+
+{% set sent = false %}
+{% set sent_confirmed = false %}
+{% set sent_declined = false %}
+{% set sent_not_answered = false %}
+{% set sent_old = false %}
+
+
+
+{% for mtg in meetings %}
+
+{% if mtg.opponent_id == mtg.host_id %}
+
+    {% set sent = true %}
+
+    {% if mtg.meet_on|date("U") < "0 days"|date("U") %}
+        {% set sent_old = true %}
+    {% endif %}
+
+    {% if mtg.is_confirmed == 1 and mtg.meet_on|date("U") >= "0 days"|date("U") %}
+        {% set sent_confirmed = true %}
+    {% endif %}
+
+    {% if mtg.is_confirmed == -1 and mtg.meet_on|date("U") >= "0 days"|date("U") %}
+        {% set sent_declined = true %}
+    {% endif %}
+
+    {% if mtg.is_confirmed == 0 and mtg.meet_on|date("U") >= "0 days"|date("U") %}
+        {% set sent_not_answered = true %}
+    {% endif %}
+
+{% endif %}
+
+{% endfor %}
+
+
+
+<h2>Sent</h2>
+
+{% if sent_confirmed %}
+<ul class="confirmed">
+    {% for mtg in meetings %}
+    {% if mtg.opponent_id == mtg.host_id and mtg.opponent_id != me and mtg.is_confirmed == 1 and
+    mtg.meet_on|date("U") >= "0 days"|date("U") %}
+    {% include 'Meetings/card.html' %}
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+{% if sent_not_answered %}
+<ul class="awaiting">
+    {% for mtg in meetings %}
+    {% if mtg.opponent_id == mtg.host_id and mtg.opponent_id != me and mtg.is_confirmed == 0 and mtg.meet_on|date("U") >= "0 days"|date("U")%}
+    {% include 'Meetings/card.html' %}
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+{% if sent_declined %}
+<ul class="declined">
+    {% for mtg in meetings %}
+    {% if mtg.opponent_id == mtg.host_id and mtg.is_confirmed == -1 and mtg.meet_on|date("U") > "0 days"|date("U") %}
+    {% include 'Meetings/card.html' %}
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+
+{% if sent_old %}
+<ul class="old">
+    {% for mtg in meetings %}
+    {% if mtg.opponent_id == mtg.host_id and mtg.meet_on|date("U") < "0 days"|date("U") %}
+    {% include 'Meetings/card.html' %}
+    {% endif %}
+    {% endfor %}
+{% endif %}
+
+</ul>

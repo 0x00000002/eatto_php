@@ -1,0 +1,10 @@
+Password reset
+
+
+Please click the following link to reset your password:
+{{ url }}
+
+Not going to change it? Then ignore this mail.
+
+
+Cheers, Red Z.

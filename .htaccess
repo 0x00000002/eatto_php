@@ -1,0 +1,22 @@
+RewriteEngine on
+
+#RewriteCond %{HTTP_HOST} ^tikonoff.com$ [NC,OR]
+#RewriteCond %{HTTP_HOST} ^www.tikonoff.com$
+
+
+RewriteCond %{REQUEST_URI} !assets/
+RewriteCond %{REQUEST_URI} !uploads/
+#RewriteRule ^css/(.*)?$ public/css/$1 [NC]
+#RewriteRule ^js/(.*)?$ public/js/$1 [NC]
+#RewriteRule ^img/(.*)?$ public/img/$1 [NC]
+
+
+RewriteCond %{REQUEST_URI} !public/
+RewriteRule ^(.*)?$ public/index.php?$1 [L]
+
+Options -Indexes
+ErrorDocument 403 /public/403.html
+
+
+
+

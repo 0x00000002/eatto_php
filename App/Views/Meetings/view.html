@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Host details{% endblock %}
+
+{% set confirm_buttons = '
+<span><a class="btn-confirm" href="/meetings/' ~ mtg.meeting_id ~ '/confirm">Confirm</a></span>
+<span><a class="btn-decline" href="/meetings/' ~ mtg.meeting_id ~ '/decline">Decline</a></span>
+' %}
+
+
+{% if me == mtg.host_id %}
+{% set opponent = 'guest' %}
+{% else %}
+{% set opponent = 'host' %}
+{% endif %}
+
+
+{% if mtg.photo_name %}
+{% set photo_url = '/uploads/users/' ~ mtg.user_id ~ '/thumbs/' ~ mtg.photo_name %}
+{% else %}
+{% set photo_url = '/assets/img/nophoto.png' %}
+{% endif %}
+
+
+{% block body%}
+
+<div id="meeting-request">
+
+    <section id="host-profile">
+        <figure>
+            <img src="{{photo_url}}" alt="{{ meeting.guest_name }}">
+            <figcaption>
+                <h1>{{mtg.user_name}}</h1>
+                <h4>{{mtg.location}}</h4>
+                <p>{{mtg.user_details}}</p>
+
+                {% if refs %}
+                <h2>References</h2>
+                {% for ref in refs %}
+                <li>
+                    <span class="quote">“</span>
+                    <div>
+                        {{ref.ref}}<br>
+                        - <a href="/hosts/{{ref.id}}/view">{{ref.name}}</a>
+                    </div>
+                </li>
+                {% endfor %}
+                {% endif %}
+            </figcaption>
+        </figure>
+    </section>
+
+    <section id="request">
+        <h2>{{ mtg.meet_on | date("d M") }}</h2>
+        <div class="text">{{ mtg.proposal }}</div>
+
+        <div class="confirmation">
+            {% if mtg.meet_on|date("U") < "0 days"|date("U") %}
+            <span class="btn-inactive disabled">Completed</span>
+            {% elseif mtg.is_confirmed == 1 %}
+            <span class="btn-confirm disabled">Confirmed</span>
+            {% elseif mtg.is_confirmed == -1 %}
+            <span class="btn-decline disabled">Declined</span>
+            {% elseif mtg.host_id != me %}
+            <span class="btn-waiting disabled">Waiting for reply</span>
+            {% else %}
+            {{ confirm_buttons | raw }}
+            {% endif %}
+        </div>
+
+        {% if mtg.meet_on|date("U") < "0 days"|date("U") and mtg.is_confirmed == 1 %}
+        {% if mtg.is_reviewed == 0 %}
+        {% set review_required = 1 %}
+        <form method="post" action="/meetings/{{mtg.user_id}}/reference" id="write-reference">
+            <h2>How was it?</h2>
+            <label for="inputReference">Write a reference to your {{opponent}}</label>
+            <input type="hidden" name="meeting_id" value="{{mtg.meeting_id}}">
+            <textarea id="inputReference" rows=3 cols="50" name="text" required class="form-control"></textarea>
+            <button type="submit" class="btn-norm">Done</button>
+        </form>
+        {% endif %}
+        {% endif %}
+
+        {% if review_required != 1 %}
+        <form method="post" action="/messages/{{mtg.user_id}}/send" id="send-message">
+            <h2>Chat with {{mtg.user_name}}</h2>
+            <label for="inputReference">Your message</label>
+            <textarea id="inputReference" rows=3 cols="50" name="text" required class="form-control"></textarea>
+            <button type="submit" class="btn-norm">Done</button>
+        </form>
+        {% endif %}
+
+    </section>
+
+    <!--
+
+    <a href="/hosts/{{meeting.user_id}}/view"><img src="{{ photo_url }}" alt="{{ meeting.guest_name }}"></a>
+    <figure class="photo">
+    <figcaption>
+            <a href="/hosts/{{meeting.user_id}}/view">View profile</a>
+        </figcaption>
+    </figure>
+    <div class="name"><h1>{{ meeting.user_name }}</h1></div>
+    <div class="date"><h2>{{ meeting.meet_on | date("d M, H:i") }}</h2></div>
+    <div class="text">{{ meeting.proposal }}</div>
+`    <div class="confirmation">
+    {% if meeting.meet_on|date("U") < "0 days"|date("U") %}
+        <span class="btn-inactive disabled">Completed</span>
+    {% elseif meeting.is_confirmed == 1 %}
+        <span class="btn-confirm disabled">Confirmed</span>
+    {% elseif meeting.is_confirmed == -1 %}
+        <span class="btn-decline disabled">Declined</span>
+    {% elseif meeting.host_id != me  %}
+        <span class="btn-waiting disabled">Waiting for reply</span>
+    {% else %}
+        {{ confirm_buttons | raw }}
+    {% endif %}
+    </div>
+    <div class="review">
+        {% if meeting.meet_on|date("U") < "0 days"|date("U") and meeting.is_confirmed == 1 %}
+        {% if meeting.is_reviewed == 0 %}
+        <form method="post" action="/meetings/' ~ meeting.user_id ~ '/reference" id="write-reference">
+            <label for="inputReference"><h3>Recommend your {{opponent}}</h3></label>
+            <textarea id="inputReference" rows=3 cols="50" name="text" required class="form-control"></textarea>
+            <button type="submit" class="btn-norm">Done</button>
+        </form>
+        {% else %}
+        <h3>Your review</h3>
+        {{meeting.review}}
+        {% endif %}
+        {% endif %}
+    </div>
+    <div class="message">
+        {% if meeting.is_reviewed == 1 %}
+        <form method="post" action="/messages/{{meeting.user_id}}/send" class="send-message">
+            <label for="inputText"><h3>Send message</h3></label>
+            <textarea id="inputText" rows=3 cols="50" name="text" required class="form-control"></textarea>
+            <button type="submit" class="btn-norm">Send</button>
+        </form>
+        {% endif %}
+    </div>
+-->
+
+</div>
+
+{% endblock %}

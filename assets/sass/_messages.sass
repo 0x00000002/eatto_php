@@ -1,0 +1,94 @@
+.message-list
+  border-radius: 0
+  border: 0px
+  border-top: 1px solid #eee
+  white-space: normal
+
+  &:hover
+    background-color: #f0f0f0
+  li
+    width: 400px
+    padding: 10px 10px
+    display: grid
+    height: 100%
+    grid-template-columns: 70px auto auto
+    grid-template-areas: "pic name date" "pic txt txt"
+    grid-row-gap: 2px
+    text-align: left
+  img
+    width: 50px
+    height: 50px
+    padding: 0
+    border-radius: 50%
+  .imag
+    grid-area: pic
+  .name
+    grid-area: name
+    font-weight: 300
+    padding-top: 2px
+    font-size: 1.5rem
+  .date
+    padding-top: 2px
+    display: flex
+    grid-area: date
+    flex-direction: column
+    justify-content: flex-start
+    align-items: flex-end
+    font-weight: 300
+    font-size: 1.5rem
+  .text
+    grid-area: txt
+    font-weight: 300
+    color: #999
+
+.unread li .text,
+.unread li .name,
+.unread li .date
+  color: #000
+  font-weight: 700
+
+.unread li .date
+  font-size: 1.5rem
+
+#chatForm
+  width: 400px
+  padding-bottom: 20px
+  button
+    @extend .btn-norm
+
+#chat
+  width: 400px
+  border-radius: 0
+  border: 0px
+  border-top: 1px solid #eee
+  white-space: normal
+  li
+    width: 400px
+    padding: 10px 10px
+    display: flex
+    flex-direction: row
+    justify-content: flex-start
+    align-items: flex-start
+    &:hover
+      background-color: #f0f0f0
+  img
+    width: 30px
+    height: 30px
+    margin-right: 10px
+    padding: 0
+    border-radius: 50%
+  .date
+    width: 100px
+    padding-top: 2px
+    display: flex
+    grid-area: date
+    flex-direction: column
+    justify-content: flex-start
+    align-items: flex-end
+    font-weight: 300
+    font-size: 1.2rem
+  .text
+    width: 300px
+    grid-area: txt
+    font-weight: 300
+    color: #999

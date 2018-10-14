@@ -1,0 +1,50 @@
+
+header
+  background-color: #fff
+  opacity: 0.9
+  box-shadow: 0px 0px 0px #eee
+  transition: 0.5s
+  nav
+    font-size: $menuSize
+    display: flex
+    align-items: baseline
+    justify-content: stretch
+    width: 100%
+    padding: 0
+    a:hover
+      text-decoration: none
+      opacity: 0.7
+      color: $link
+  div
+    flex-basis: 1
+    img
+      width: 30px
+      height: 30px
+
+      box-sizing: content-box
+    a
+      margin-right: 20px
+  div:first-child
+    width: 140px
+    a
+      color: $logoColor
+  div:last-child
+    text-align: right
+    align-self: flex-end
+    justify-self: flex-end
+    flex-basis: 3
+    flex-grow: 1
+  button
+    padding: $btnLp
+    border-radius: $btnLr
+    color: $btnLi
+    border: 2px solid $btnLi
+    background-color: transparent
+    &:hover
+      color: $btnL
+      background-color: $btnLi
+  .notification
+    background-color: yellowgreen
+    color: #fff
+    padding: 6px 15px 7px 15px
+    border-radius: 20px

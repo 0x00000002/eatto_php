@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Meetings{% endblock %}
+
+{% block body%}
+
+
+<h1>Meeting requests</h1>
+
+{% if meetings %}
+
+{% set confirmed = false %}
+{% set declined = false %}
+{% set sent = false %}
+{% set received = false %}
+{% set old = false %}
+
+<div id="requests-list">
+
+    <section class="req-list">
+        {% include 'Meetings/sent.html' %}
+    </section>
+
+    <section class="req-list">
+        {% include 'Meetings/received.html' %}
+    </section>
+
+</div>
+
+{% else %}
+No meetings yet.
+{% endif %}
+
+{% endblock %}
+
+

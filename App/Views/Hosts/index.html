@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div id="hosts">
+
+    <section id="form">
+        <h1>Find hosts</h1>
+        <form method="post" action="/hosts" name="findHost" onsubmit="return changeAction();">
+            <input type="text"
+               id="name"
+               name="name"
+               value="{{name}}"
+               class="form-control"
+               placeholder="Enter city name"
+            />
+            <input type="hidden" name="id" value="">
+            <input type="button" onclick="changeAction();" class="btn-norm" value=" Find ">
+        </form>
+     </section>
+
+    <section id="host-list">
+        {% if hosts %}
+        {% for host in hosts %}
+        {% if host.status == 0 %}
+        <a href="/hosts/{{host.user_id}}/view" class="card">
+            <figure>
+                <div class="photo">
+                    {% if host.profile_photo %}
+                    {% set photo = "/uploads/users/" ~ host.user_id ~ "/thumbs/" ~ host.profile_photo %}
+                    {% else %}
+                    {% set photo = '/assets/img/icons/nophoto_small.png' %}
+                    {% endif %}
+                    <img src="{{photo}}" alt="{{host.user_name}}"></div>
+                <figcaption>
+                    <div class="name">{{host.user_name}}</div>
+                    {% if host.refs %}
+                    <div class="references">{{host.refs}} reference{% if host.ref > 1 %}s{% endif %}</div>
+                    {% endif %}
+                    <!--<div class="address">{{host.country}}, {{host.city}}, {{host.address}}</div>-->
+                </figcaption>
+            </figure>
+        </a>
+        {% endif %}
+        {% endfor %}
+        {% elseif name %}
+        <p class="not-found">
+            No one registered yet<br>
+        </p>
+        {% else %}
+
+        {% endif %}
+    </section>
+
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+    $(document).ready(initialize);
+    var autocomplete;
+
+    function initialize() {
+        var options = {
+            types: ['(cities)'],
+        };
+
+        var input = document.getElementById('name');
+        autocomplete = new google.maps.places.Autocomplete(input, options);
+    }
+
+    function changeAction() {
+        var place = autocomplete.getPlace();
+        if (place != undefined) {
+            document.findHost.id.value = place.id;
+            document.findHost.submit();
+        }
+        return false;
+    }
+
+    $(document).ready(
+        function pullNotifications() {
+            $.ajax({
+                url: "/notifications",
+                success: function (json) {
+                    //console.log(json);
+                    if (json.mtg == 0)
+                        document.getElementById("i-meeting").src = "/assets/img/icons/mtg-w.png";
+                    if (json.mtg == 1)
+                        document.getElementById("i-meeting").src = "/assets/img/icons/mtg-g.png";
+                    if (json.msg == 0)
+                        document.getElementById("i-message").src = "/assets/img/icons/msg-w.png";
+                    if (json.msg == 1)
+                        document.getElementById("i-message").src = "/assets/img/icons/msg-g.png";
+                    if (json.ref == 0)
+                        $("#i-profile").removeClass("");
+                    if (json.ref == 1)
+                        $("#i-profile").addClass("");
+
+                    setTimeout(function () {
+                        pullNotifications();
+                    }, 3000);
+                }
+                ,
+                error: function () {
+                    console.log('Can not run');
+                }
+            })
+        })
+
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrewHwdEUOk9rtiKTPzZOCYNnEPcQX-is&libraries=places&callback=initialize">
+</script>
+
+{% endblock %}

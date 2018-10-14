@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Messages{% endblock %}
+
+{% block body%}
+
+<h1>Chat with {{user.name}}</h1>
+<br>
+<form method="post" action="/messages/{{user.id}}/send" id="chatForm">
+    <div class="form-group">
+        <label for="inputText">Your message</label>
+        <textarea id="inputText" rows=3 name="text" autofocus required class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-default">Send</button>
+</form>
+
+<br>
+{% if messages %}
+<div id="chat">
+    {% for msg in messages %}
+
+    {% if msg.photo %}
+        {% set photo = "/uploads/users/" ~ msg.sender_id ~ "/thumbs/" ~ msg.photo %}
+    {% else %}
+        {% set photo = '/assets/img/nophoto_small.png' %}
+    {% endif %}
+
+    <li>
+        <div class="imag"><img src="{{photo}}" alt="{{msg.user_name}}"></div>
+        <!--<div class="name">{{msg.sender_name}}</div>-->
+        <div class="text">{{msg.text}}</div>
+        <div class="date">{{msg.sent_on}}</div>
+    </li>
+
+    {% endfor %}
+</div>
+
+{% else %}
+No messages yet.
+{% endif %}
+
+{% endblock %}
+
+

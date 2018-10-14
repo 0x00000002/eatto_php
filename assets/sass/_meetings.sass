@@ -1,0 +1,242 @@
+
+#requests-list
+  display: flex
+  flex-direction: row
+  width: 100%
+  h2
+    font-size: 4rem
+    line-height: 1rem
+    padding: 20px 0 50px 0
+
+  h3
+    padding: 20px 0
+
+  ul
+    padding: 0
+    margin: 0
+  .req-list
+    padding: 0
+    display: flex
+    flex-direction: column
+    width: 50%
+    align-items: flex-start
+  .req-list-card
+    margin-top: 1px
+    border-radius: 0
+    border: 0px
+    white-space: normal
+    &:hover
+      background-color: #f3f3f3
+      text-decoration: none
+    li
+      width: 400px
+      padding: 10px 10px
+      display: grid
+      height: 100%
+      grid-template-columns: 70px auto auto
+      grid-template-areas: "pic name date" "pic txt txt" "pic rec-btn ."
+      grid-row-gap: 2px
+      text-align: left
+    img
+      width: 50px
+      height: 50px
+      padding: 0
+      border-radius: 50%
+    .imag
+      grid-area: pic
+    .name
+      grid-area: name
+      font-weight: 300
+      padding-top: 2px
+      font-size: 1.5rem
+    .date
+      padding-top: 2px
+      display: flex
+      grid-area: date
+      flex-direction: column
+      justify-content: flex-start
+      align-items: flex-end
+      font-weight: 300
+      font-size: 1.5rem
+    .text
+      grid-area: txt
+      font-weight: 300
+      color: #999
+    .rec-btn
+      grid-area: rec-btn
+      font-weight: 300
+      font-size: 1rem
+      padding: 5px 10px
+      background-color: black
+      color: #fff
+      text-transform: uppercase
+      width: 100px
+      text-align: center
+    &:hover
+      margin-left: -10px
+      transition: 0.2s
+      transition-delay: 0s
+  .declined
+    .req-list-card
+      border-left: 5px solid coral
+  .awaiting
+    padding: 0
+    margin: 0
+    display: flex
+    flex-direction: column
+    align-items: flex-start
+    .req-list-card
+      border-left: 5px solid gold
+  .confirmed
+    .req-list-card
+      border-left: 5px solid yellowgreen
+  .old, .declined
+    display: flex
+    flex-direction: column
+    justify-content: stretch
+    align-items: flex-start
+    margin: 30px 0 0 0
+    .req-list-card img,
+    .req-list-card .text,
+    .req-list-card .date,
+    .req-list-card .name,
+    .req-list-card name
+      opacity: 0.3
+  .old
+    .req-list-card
+      border-left: 5px solid #f0f0f0
+
+#meeting-request
+  display: flex
+  width: $width
+  flex-direction: row
+  section
+    width: 50%
+    display: flex
+    &:first-child
+      border-right: 1px solid #ccc
+      padding-right: 80px
+      flex-direction: column
+    &:last-child
+      padding-left: 80px
+      flex-wrap: wrap
+
+
+#host-profile
+  display: flex
+  flex-direction: column
+  justify-content: stretch
+  box-sizing: border-box
+  padding: 0 80px 0 0
+  figure
+    display: flex
+    flex-direction: row
+    align-items: stretch
+    justify-content: stretch
+    img
+      width: 150px
+      height: 150px
+      border-radius: 50%
+      margin-right: 50px
+      align-self: flex-start
+      justify-self: center
+    h1
+      padding-top: 5px
+      margin: 0
+  figcaption
+    display: flex
+    flex-direction: column
+    justify-content: stretch
+    align-items: flex-start
+    p
+      text-align: left
+
+
+#request
+  padding: 0
+  margin: 0
+  display: flex
+  flex-direction: column
+  justify-content: flex-start
+  align-items: flex-start
+  h2
+    font-size: 2.5rem
+    font-weight: 700
+    padding: 0
+    margin: 10px 0
+  form
+    padding: 0
+    display: flex
+    flex-direction: column
+    justify-content: flex-start
+    align-items: flex-start
+  .btn-norm
+    margin: 20px 0
+  #write-reference,
+  #send-message
+    margin-top: 50px
+    h2
+      padding: 30px 0
+      margin-top: 100px
+      font-weight: 300
+  .confirmation
+    padding: 20px 0
+  .text
+    text-align: left
+    padding: 10px 0
+
+
+//#meeting-request
+  display: grid
+  width: 600px
+  padding: 0 50px 0 0
+  grid-template-columns: 200px auto auto
+  grid-template-areas: "pic name " "pic date" "pic txt" "pic confirmation" "pic review" "pic message"
+  grid-row-gap: 10px
+  grid-column-gap: 30px
+  h1
+    padding: 0
+    margin-top: 0px
+  h2
+    font-size: 2rem
+    font-weight: 700
+    padding: 0
+    margin: 0
+  h3
+    margin: 0
+    padding: 50px 0 10px 0
+  img
+    width: 200px
+    height: 200px
+    border-radius: 50%
+  figcaption
+    text-align: center
+    padding: 20px 0
+    text-decoration: underline
+  div
+    align-self: flex-start
+  .photo
+    grid-area: pic
+  .name
+    grid-area: name
+  .date
+    grid-area: date
+    align-self: center
+  .text
+    grid-area: txt
+    text-align: left
+    justify-self: flex-start
+    padding: 20px 0
+  .confirmation
+    grid-area: confirmation
+  .review
+    grid-area: review
+    flex-direction: column
+  .message
+    grid-area: message
+  form
+    flex-direction: column
+    align-items: flex-start
+    button
+      margin: 10px 0
+

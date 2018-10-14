@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Messages{% endblock %}
+
+{% block body%}
+
+
+<h1>Messages</h1>
+<br>
+
+{% if messages %}
+    {% for msg in messages %}
+
+    {% if msg.photo %}
+        {% set photo = "/uploads/users/" ~ msg.user_id ~ "/thumbs/" ~ msg.photo %}
+    {% else %}
+        {% set photo = '/assets/img/nophoto_small.png' %}
+    {% endif %}
+
+    <a href="/messages/{{msg.user_id}}/view"
+       class="btn {% if me != msg.sender_id and not msg.is_read %}unread{% endif %} message-list">
+        <li>
+            <div class="imag"><img src="{{photo}}" alt="{{msg.user_name}}"></div>
+            <div class="name">{{msg.user_name}}</div>
+            <div class="date">{{msg.sent_on}}</div>
+            <div class="text">{{msg.text}}</div>
+        </li>
+    </a><br>
+    {% endfor %}
+{% else %}
+No messages yet.
+{% endif %}
+
+
+{% endblock %}
+
+

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block body %}
+
+
+<form method="post" action="/signup/create" id="formSignup" class="auth">
+
+    <h1>Sign up</h1>
+
+    {% if user.errors is not empty %}
+    <p>Errors:</p>
+    <ul>
+        {% for error in user.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="form-group">
+        <label for="inputName">Name</label>
+        <input id="inputName" name="name" autofocus value="{{ user.name }}" required class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label for="inputEmail">Email address</label>
+        <input id="inputEmail" name="email" value="{{ user.email }}" required type="email" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword">Password</label>
+        <input type="password" id="inputPassword" name="password" required class="form-control"/>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-default">Sign up</button>
+</form>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script
+        src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js">
+</script>
+
+
+<script src="/assets/js/hideShowPassword.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#formSignup').validate({
+            rules: {
+                name: 'required',
+                email: {
+                    required: true,
+                    email: true,
+                    remote: '/Account/validateEmail'
+
+                },
+                password: {
+                    required: true,
+                    minlength: 8
+                }
+            },
+            messages: {
+                email: {
+                    remote: 'email already taken'
+                }
+            }
+        });
+
+        $('#inputPassword').hideShowPassword({
+            show: false,
+            innerToggle: 'focus',
+            id: 'toggle'
+        });
+
+    })
+</script>
+
+{% endblock %}
+

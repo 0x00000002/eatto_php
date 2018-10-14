@@ -1,0 +1,8 @@
+Account activation
+
+
+Please click the following link to activate your account:
+{{ url }}
+
+
+Cheers, eatto.
